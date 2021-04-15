@@ -1,0 +1,32 @@
+
+    <nav id="sidebarMenu" class="sidebar d-md-block bg-primary text-white collapse px-4">
+        <div class="sidebar-sticky pt-3 mx-auto">
+            <ul class="nav flex-column">
+            <li class="nav-item  {% if 'dashboard' in segment %} active {% endif %}">
+                <a href="/dashboard" class="nav-link">
+                <span class="sidebar-icon"><span class="fas fa-chart-pie"></span></span>
+                <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item  {% if 'settings' in segment %} active {% endif %}">
+                <a href="/control-center" class="nav-link">
+                    <span class="sidebar-icon"><span class="fas fa-cog"></span></span>
+                    <span>Control Center</span>
+                </a>
+            </li>
+            <li class="nav-item  {% if 'logs' in segment %} active {% endif %}">
+                <a href="/logs" class="nav-link">
+                    <span class="sidebar-icon"><span class="far fa-file-alt"></span></span> 
+                    <span>Logs</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url_for('base_blueprint.logout') }}" class="nav-link">
+                    <span class="sidebar-icon"><span class="fas fa-sign-out-alt text-danger"></span></span>
+                    <span>Logout</span>
+                </a>
+            </li>
+            </ul>
+        </div>
+    </nav>
+

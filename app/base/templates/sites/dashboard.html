@@ -1,0 +1,40 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+  <main class="content">
+    {% include 'includes/navigation.html' %}
+      <div class="py-4">
+          <div class="d-flex justify-content-between w-100 flex-wrap">
+              <div class="mb-3 mb-lg-0">
+                  <h1 class="h4">Coast Admin Dashboard</h1>
+              </div>
+          </div>
+      </div>
+
+      <div class="card border-light shadow-sm mb-4">
+          <div class="card-body">
+            <h1 class="h4">Your Objectives</h1>
+            <p>
+                <ol>
+                    <li>Trigger the safety shutoff</li>
+                    <li>Move the bot to a new location</li>
+                    <li>Get root access of the bot</li>
+                </ol>
+            </p>
+              <p><b>Remember:</b> {{ quote }}</p>
+          </div>
+      </div>
+      {% include 'includes/footer.html' %}
+
+  </main>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

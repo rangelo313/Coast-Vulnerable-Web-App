@@ -1,0 +1,71 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Control Center {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<main class="content">
+    {% include 'includes/navigation.html' %}
+    <div class="py-4">
+        <div class="d-flex justify-content-between w-100 flex-wrap">
+            <div class="mb-3 mb-lg-0">
+                <h1 class="h4">Coast Control Center</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-4">
+        <a class="btn btn-danger" type="button" href="/safety_shutoff">Safety Shutoff</a>
+    </div>
+
+    <div class="col-12 col-xl-8">
+        <div class="card card-body bg-white border-light shadow-sm mb-4">
+            <h2 class="h4 mb-4">New Mission</h2>
+            <form method="post">
+                {{ form.hidden_tag() }}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form.bot(class="form-select") }}
+                    </div>
+                </div>
+                <h4 class="h5 my-4">Adress</h3>
+                <div class="row">
+                    <div class="col-sm-8 mb-3">
+                        <div class="form-group">
+                            {{ form.address.label }} 
+                            {{ form.address(class="form-control", placeholder="Enter your home address") }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 mb-3">
+                        <div class="form-group">
+                            {{ form.city.label }} 
+                            {{ form.city(class="form-control", placeholder="City") }}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            {{ form.zipcode.label }} 
+                            {{ form.zipcode(class="form-control", placeholder="ZIP") }}
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% include 'includes/footer.html' %}
+
+</main>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

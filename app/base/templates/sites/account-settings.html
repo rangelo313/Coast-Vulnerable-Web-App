@@ -1,0 +1,137 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Account Settings {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<main class="content">
+    {% include 'includes/navigation.html' %}
+
+    <div class="py-4">
+        <div class="d-flex justify-content-between w-100 flex-wrap">
+            <div class="mb-3 mb-lg-0">
+                <h1 class="h4">Account Settings</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-xl-8">
+        <div class="card card-body shadow-sm mb-4 mb-lg-0">
+            <h2 class="h5 mb-4">Security Keys</h2>
+
+            <ul class="list-group list-group-flush">
+                {% for sk in security_keys %}
+
+                <li class="list-group-item d-flex align-items-center justify-content-between px-0"
+                    id="security-key-{{ sk.id }}-container">
+                    <div>
+                        <h3 class="h6 mb-1" id="security-key-{{ sk.id }}-name"
+                            style="line-height: calc(1.5em + 1.225rem)">{{ sk.name }}</h3>
+                        <p class="small pe-4">Added on {{ sk.date_added }}</p>
+                    </div>
+                    <div>
+                        <button class="btn btn-success" type="button" style="display:none"
+                            onclick="securityKeySave({{ sk.id }})"><i class="fas fa-save"></i></button>
+                        <button class="btn btn-info" type="button" onclick="securityKeyEdit({{ sk.id }})"><i
+                                class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger" type="button" onclick="securityKeyDelete({{ sk.id }})"><i
+                                class="fas fa-trash"></i></button>
+                    </div>
+                </li>
+
+                {% endfor %}
+            </ul>
+
+
+            <!-- Register new key  -->
+            <form id="register-form" name="register" method="get">
+                <div class="py-4 row">
+                    <div class="col-sm-4 mb-3">
+                        <input type="text" class="form-control" name="master_password" placeholder="Master Password">
+                    </div>
+                    <div class="col-sm-4">
+                        <button class="btn btn-secondary text-dark mr-2 dropdown-toggle" id="register">New<span
+                                class="fas fa-plus ml-2"></span></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    {% include 'includes/footer.html' %}
+
+</main>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="{{ url_for('webauthn_blueprint.static', filename='js/lib/base64.js') }}"></script>
+<script src="{{ url_for('webauthn_blueprint.static', filename='js/webauthn.js') }}"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", e => {
+        document.querySelector('#register').addEventListener('click', didClickRegister);
+        //document.querySelector('#login').addEventListener('click', didClickLogin);
+    });
+
+    async function securityKeyDelete(id) {
+        let r = await fetch_json(
+            "{{ url_for('base_blueprint.security_key') }}",
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    'id': id,
+                    'action': 'delete'
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            }
+        );
+
+        if (r['status'] == 'success') {
+            document.querySelector('#security-key-' + id + '-container').remove();
+        } else {
+            alert(r)
+        }
+    }
+
+    function securityKeyEdit(id) {
+        let name = document.querySelector('#security-key-' + id + '-name').innerText;
+        document.querySelector('#security-key-' + id + '-name').innerHTML = '<input type="text" class="form-control" placeholder="' + name + '">';
+        document.querySelector('#security-key-' + id + '-container .btn-info').style.display = 'none';
+        document.querySelector('#security-key-' + id + '-container .btn-success').style.display = 'inline';
+    }
+
+    async function securityKeySave(id) {
+        let name = document.querySelector('#security-key-' + id + '-name input').value;
+        r = await fetch_json(
+            "{{ url_for('base_blueprint.security_key') }}",
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    'id': id,
+                    'action': 'update',
+                    'name': name
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            }
+        );
+
+        if (r['status'] == 'success') {
+            document.querySelector('#security-key-' + id + '-name').innerText = name;
+            document.querySelector('#security-key-' + id + '-container .btn-success').style.display = 'none';
+            document.querySelector('#security-key-' + id + '-container .btn-info').style.display = 'inline';
+        } else {
+            alert('error')
+        }
+    }
+</script>
+{% endblock javascripts %}
