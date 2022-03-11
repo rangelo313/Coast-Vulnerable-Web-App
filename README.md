@@ -26,4 +26,7 @@ flask run --host=0.0.0.0 --port=5000  --cert=localhost.pem --key=localhost-key.p
 docker build -t coast-admin .
 docker run -dp 5000:5005 coast-admin
 ```
-# Codigo
+# Goal:
+Cause the development bot to freeze
+Drive the development bot to a location of your choice
+Please write down all security vulnerabilities you find and exploit them as necessary to reveal two secret strings that start with FLAG_1 and FLAG_2, respectively.
